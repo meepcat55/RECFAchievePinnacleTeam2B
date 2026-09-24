@@ -65,11 +65,11 @@ def drivetrainctl(x,y):
     yy=float(y/100)
     leftmult=yy
     rightmult=yy
-    if yy < 0:
-        yy=yy*(-1)
-        leftmult=leftmult*(1-yy)
-    elif yy > 0:
-        rightmult=rightmult*(1-yy)
+    if xx < 0:
+        xx=xx*(-1)
+        leftmult=leftmult*(1-xx)
+    elif xx > 0:
+        rightmult=rightmult*(1-xx)
     left=leftmult*100
     right=rightmult*100
     Right1.set_velocity(right, PERCENT)
@@ -91,7 +91,7 @@ def drivetrainctl(x,y):
 def when_started1():
     global myVariable
     while True:
-        drivetrainctl(controller_1.axis3.position(), controller_1.axis1.position())
+        drivetrainctl(controller_1.axis1.position(), controller_1.axis3.position())
         wait(5, MSEC)
 
 when_started1()
