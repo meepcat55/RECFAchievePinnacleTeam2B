@@ -49,6 +49,8 @@ leftmult = float(1)
 rightmult = float(1)
 left=0
 right=0
+rsr=0
+rsl=0
 myVariable = 0
 
 def Left_Drive():
@@ -60,9 +62,12 @@ def Right_Drive():
     global myVariable
     Right1.spin(FORWARD)
     Right2.spin(FORWARD)
-def drivetrainctl(x,y):
+def drivetrainctl(x,y,z):
     xx=float(x/100)
     yy=float(y/100)
+    rsr=0
+    rsl=0
+    rrist=float(z/100)
     leftmult=yy
     rightmult=yy
     if xx < 0:
@@ -70,8 +75,15 @@ def drivetrainctl(x,y):
         leftmult=leftmult*(1-xx)
     elif xx > 0:
         rightmult=rightmult*(1-xx)
-    left=leftmult*100
-    right=rightmult*100
+    if rrist < 0:
+        rrist=rrist*(-1)
+        rsr=50*(rrist)
+    elif rrist > 0:
+        rsl=50*(rrist)
+    left=(leftmult*100)
+    right=(rightmult*100)
+    left=left-rsr
+    right=right-rsl
     Right1.set_velocity(right, PERCENT)
     Right2.set_velocity(right, PERCENT)
     Left1.set_velocity(left, PERCENT)
@@ -91,7 +103,7 @@ def drivetrainctl(x,y):
 def when_started1():
     global myVariable
     while True:
-        drivetrainctl(controller_1.axis1.position(), controller_1.axis3.position())
+        drivetrainctl(controller_1.axis4.position(), controller_1.axis3.position(), controller_1.axis1.position())
         wait(5, MSEC)
 
 when_started1()
