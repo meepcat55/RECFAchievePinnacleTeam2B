@@ -82,8 +82,18 @@ def drivetrainctl(x,y,z):
         rsl=50*(rrist)
     left=(leftmult*100)
     right=(rightmult*100)
-    left=left-rsr
-    right=right-rsl
+    if left>0:
+        left=left-rsr
+    elif left<0:
+        left=left+rsr
+    else:
+        left=rsl
+    if right>0:
+        right=right-rsl
+    elif right < 0:
+        right=right+rsl
+    else:
+        right=rsr
     Right1.set_velocity(right, PERCENT)
     Right2.set_velocity(right, PERCENT)
     Left1.set_velocity(left, PERCENT)
