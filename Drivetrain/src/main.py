@@ -53,55 +53,39 @@ rsr=0
 rsl=0
 myVariable = 0
 
-def Left_Drive():
-    global myVariable
+def Drive():
     Left1.spin(FORWARD)
     Left2.spin(FORWARD)
-
-def Right_Drive():
-    global myVariable
     Right1.spin(FORWARD)
     Right2.spin(FORWARD)
-def drivetrainctl(x,y,z):
-    xx=float(x/100)
-    yy=float(y/100)
-    rsr=0
-    rsl=0
-    rrist=float(z/100)
-    leftmult=yy
-    rightmult=yy
-    if xx < 0:
-        xx=xx*(-1)
-        leftmult=leftmult*(1-xx)
-    elif xx > 0:
-        rightmult=rightmult*(1-xx)
-    if rrist < 0:
-        rrist=rrist*(-1)
-        rsr=50*(rrist)
-    elif rrist > 0:
-        rsl=50*(rrist)
-    left=(leftmult*100)
-    right=(rightmult*100)
-    if left>0:
-        left=left-rsr
-    elif left<0:
-        left=left+rsr
-    else:
-        left=rsl
-    if right>0:
-        right=right-rsl
-    elif right < 0:
-        right=right+rsl
-    else:
-        right=rsr
-    Right1.set_velocity(right, PERCENT)
-    Right2.set_velocity(right, PERCENT)
-    Left1.set_velocity(left, PERCENT)
-    Left2.set_velocity(left, PERCENT)
-    Left_Drive()
-    Right_Drive()
-
     
+def velocitys(l,r):
+    Right1.set_velocity(r, PERCENT)
+    Right2.set_velocity(r, PERCENT)
+    Left1.set_velocity(l, PERCENT)
+    Left2.set_velocity(l, PERCENT)
+
+def newdrivetrainctl(l,r):
+    #convert input values to local variables and ensures they are floating point
+    rstick=float(r)
+    lstick=float(l)
+    #modifies the right stick value so that it can be combine with leftstick to get proper turning
+    rstick=float(rstick+rstick*(lstick/100))
+    #the above function can result in cases where the value is over 100 or under 100 in such cases it is scaled approprietly
+    if rstick>100:
+        rstick=100
+    elif rstick<-100:
+        rstick=-100
+    #when its driving backward the right stick needs to be applied differently so this ensures that
+    if lstick>=0:
+        leftdrive=lstick+rstick
+        rightdrive=lstick-rstick
+    else:
+        leftdrive=lstick-rstick
+        rightdrive=lstick+rstick
+    #applies everything
+    velocitys(leftdrive, rightdrive)
+    Drive()
 
     
 
@@ -113,7 +97,7 @@ def drivetrainctl(x,y,z):
 def when_started1():
     global myVariable
     while True:
-        drivetrainctl(controller_1.axis4.position(), controller_1.axis3.position(), controller_1.axis1.position())
+        newdrivetrainctl(controller_1.axis3.position(), controller_1.axis1.position())
         wait(5, MSEC)
 
 when_started1()
