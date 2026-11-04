@@ -12,14 +12,14 @@ import math
 
 #USE PORTGEN FOR THIS
 brain=Brain()
-Right1_motor_a = Motor(Ports.PORT4, GearSetting.RATIO_6_1, False)
+Right1_motor_a = Motor(Ports.PORT6, GearSetting.RATIO_6_1, False)
 Right1_motor_b = Motor(Ports.PORT5, GearSetting.RATIO_6_1, False)
 Right1 = MotorGroup(Right1_motor_a, Right1_motor_b)
-Right2 = Motor(Ports.PORT6, GearSetting.RATIO_6_1, False)
-Left1_motor_a = Motor(Ports.PORT1, GearSetting.RATIO_6_1, True)
+Right2 = Motor(Ports.PORT4, GearSetting.RATIO_6_1, False)
+Left1_motor_a = Motor(Ports.PORT3, GearSetting.RATIO_6_1, True)
 Left1_motor_b = Motor(Ports.PORT2, GearSetting.RATIO_6_1, True)
 Left1 = MotorGroup(Left1_motor_a, Left1_motor_b)
-Left2 = Motor(Ports.PORT3, GearSetting.RATIO_6_1, True)
+Left2 = Motor(Ports.PORT1, GearSetting.RATIO_6_1, True)
 Lift = Motor(Ports.PORT10, GearSetting.RATIO_36_1, True)
 ClawR = Motor(Ports.PORT9, GearSetting.RATIO_6_1, True)
 controller_1 = Controller(PRIMARY)
