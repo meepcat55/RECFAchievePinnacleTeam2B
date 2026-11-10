@@ -5,15 +5,15 @@ import math
 #USE PORTGEN FOR THIS
 brain=Brain()
 Right1_motor_a = Motor(Ports.PORT6, GearSetting.RATIO_6_1, False)
-Right1_motor_b = Motor(Ports.PORT5, GearSetting.RATIO_6_1, False)
+Right1_motor_b = Motor(Ports.PORT7, GearSetting.RATIO_6_1, False)
 Right1 = MotorGroup(Right1_motor_a, Right1_motor_b)
 Right2 = Motor(Ports.PORT4, GearSetting.RATIO_6_1, False)
 Left1_motor_a = Motor(Ports.PORT3, GearSetting.RATIO_6_1, True)
 Left1_motor_b = Motor(Ports.PORT2, GearSetting.RATIO_6_1, True)
 Left1 = MotorGroup(Left1_motor_a, Left1_motor_b)
 Left2 = Motor(Ports.PORT1, GearSetting.RATIO_6_1, True)
-Lift = Motor(Ports.PORT10, GearSetting.RATIO_36_1, True)
-ClawR = Motor(Ports.PORT9, GearSetting.RATIO_6_1, True)
+Lift = Motor(Ports.PORT20, GearSetting.RATIO_36_1, True)
+ClawR = Motor(Ports.PORT19, GearSetting.RATIO_6_1, True)
 controller_1 = Controller(PRIMARY)
 
 
@@ -31,8 +31,15 @@ left=0
 right=0
 rsr=0
 rsl=0
+ClawR.set_velocity(100, PERCENT)
+Lift.set_velocity(100, PERCENT)
+ClawR.set_stopping(HOLD)
+Lift.set_stopping(HOLD)
 
 
+
+
+### BEGIN DRIVE TRAIN CODE
 def Drive():
     Left1.spin(FORWARD)
     Left2.spin(FORWARD)
@@ -66,11 +73,32 @@ def newdrivetrainctl(l,r):
     #applies everything
     brain.screen.print(str(leftdrive) + "," + str(rightdrive))
     velocitys(leftdrive, rightdrive)
-
     Drive()
+### END DRIVE TRAIN CODE
+
+### BEGIN MISC CONTROL CODE
+def limbctrl():
+    if controller_1.buttonUp.pressing():
+        Lift.set_velocity(100, PERCENT)
+        Lift.spin(FORWARD)
+    elif controller_1.buttonDown.pressing():
+        Lift.set_velocity(100, PERCENT)
+        Lift.spin(REVERSE)
+    else:
+        Lift.stop()
+    if 	controller_1.buttonA.pressing():
+        ClawR.set_velocity(10, PERCENT)
+        ClawR.spin(FORWARD)
+    elif controller_1.buttonB.pressing():
+        ClawR.set_velocity(10, PERCENT)
+        ClawR.spin(REVERSE)
+    else:
+        ClawR.stop()
+### END MISC CONTROL CODE
 
 def when_started1():
     while True:
         newdrivetrainctl(controller_1.axis3.position(), controller_1.axis1.position())
+        limbctrl()
         wait(5, MSEC)
 when_started1()
