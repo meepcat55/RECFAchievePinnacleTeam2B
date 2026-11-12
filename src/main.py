@@ -12,7 +12,8 @@ Left1_motor_a = Motor(Ports.PORT3, GearSetting.RATIO_6_1, True)
 Left1_motor_b = Motor(Ports.PORT2, GearSetting.RATIO_6_1, True)
 Left1 = MotorGroup(Left1_motor_a, Left1_motor_b)
 Left2 = Motor(Ports.PORT1, GearSetting.RATIO_6_1, True)
-Lift = Motor(Ports.PORT20, GearSetting.RATIO_36_1, True)
+LiftR = Motor(Ports.PORT5, GearSetting.RATIO_18_1, True)
+LiftL = Motor(Ports.PORT6, GearSetting.RATIO_18_1, False)
 ClawR = Motor(Ports.PORT19, GearSetting.RATIO_6_1, True)
 controller_1 = Controller(PRIMARY)
 
@@ -32,9 +33,11 @@ right=0
 rsr=0
 rsl=0
 ClawR.set_velocity(100, PERCENT)
-Lift.set_velocity(100, PERCENT)
+LiftR.set_velocity(100, PERCENT)
+LiftL.set_velocity(100, PERCENT)
 ClawR.set_stopping(HOLD)
-Lift.set_stopping(HOLD)
+LiftR.set_stopping(HOLD)
+LiftL.set_stopping(HOLD)
 
 
 
@@ -79,13 +82,18 @@ def newdrivetrainctl(l,r):
 ### BEGIN MISC CONTROL CODE
 def limbctrl():
     if controller_1.buttonUp.pressing():
-        Lift.set_velocity(100, PERCENT)
-        Lift.spin(FORWARD)
+        LiftR.set_velocity(100, PERCENT)
+        LiftR.spin(FORWARD)
+        LiftL.set_velocity(100, PERCENT)
+        LiftL.spin(FORWARD)
     elif controller_1.buttonDown.pressing():
-        Lift.set_velocity(100, PERCENT)
-        Lift.spin(REVERSE)
+        LiftR.set_velocity(100, PERCENT)
+        LiftR.spin(REVERSE)
+        LiftL.set_velocity(100, PERCENT)
+        LiftL.spin(REVERSE)
     else:
-        Lift.stop()
+        LiftR.stop()
+        LiftL.stop()
     if 	controller_1.buttonA.pressing():
         ClawR.set_velocity(10, PERCENT)
         ClawR.spin(FORWARD)
