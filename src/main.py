@@ -4,21 +4,20 @@ import math
 
 #USE PORTGEN FOR THIS
 brain=Brain()
-Right1_motor_a = Motor(Ports.PORT6, GearSetting.RATIO_6_1, False)
-Right1_motor_b = Motor(Ports.PORT7, GearSetting.RATIO_6_1, False)
+Right1_motor_a = Motor(Ports.PORT17, GearSetting.RATIO_6_1, False)
+Right1_motor_b = Motor(Ports.PORT2, GearSetting.RATIO_6_1, False)
 Right1 = MotorGroup(Right1_motor_a, Right1_motor_b)
-Right2 = Motor(Ports.PORT4, GearSetting.RATIO_6_1, False)
-Left1_motor_a = Motor(Ports.PORT3, GearSetting.RATIO_6_1, True)
-Left1_motor_b = Motor(Ports.PORT2, GearSetting.RATIO_6_1, True)
+Right2 = Motor(Ports.PORT1, GearSetting.RATIO_6_1, False)
+Left1_motor_a = Motor(Ports.PORT16, GearSetting.RATIO_6_1, True)
+Left1_motor_b = Motor(Ports.PORT4, GearSetting.RATIO_6_1, True)
 Left1 = MotorGroup(Left1_motor_a, Left1_motor_b)
-Left2 = Motor(Ports.PORT1, GearSetting.RATIO_6_1, True)
-LiftR = Motor(Ports.PORT5, GearSetting.RATIO_18_1, True)
-LiftL = Motor(Ports.PORT6, GearSetting.RATIO_18_1, False)
-ClawR = Motor(Ports.PORT19, GearSetting.RATIO_6_1, True)
+Left2 = Motor(Ports.PORT3, GearSetting.RATIO_6_1, True)
+LiftR = Motor(Ports.PORT6, GearSetting.RATIO_18_1, True)
+LiftL = Motor(Ports.PORT5, GearSetting.RATIO_18_1, False)
+ClawR = Motor(Ports.PORT7, GearSetting.RATIO_6_1, True)
 ClawC = Motor(Ports.PORT20, GearSetting.RATIO_18_1, False)
 clawP = DigitalOut(brain.three_wire_port.a)
 controller_1 = Controller(PRIMARY)
-
 
 
 # add a small delay to make sure we don't print in the middle of the REPL header
@@ -108,15 +107,15 @@ def limbctrl():
     else:
         ClawR.stop()
     #claw opening and closing control
-    if controller_1.L2.pressing():
+    if controller_1.buttonL2.pressing():
         clawP.set(True)
-    if controller_1.R2.pressing():
+    if controller_1.buttonR2.pressing():
         clawP.set(False)
     #Claw rotating clockwize and CC
-    if 	controller_1.R1.pressing():
+    if 	controller_1.buttonR1.pressing():
         ClawC.set_velocity(10, PERCENT)
         ClawC.spin(FORWARD)
-    elif controller_1.L1.pressing():
+    elif controller_1.buttonL1.pressing():
         ClawC.set_velocity(10, PERCENT)
         ClawC.spin(REVERSE)
     
