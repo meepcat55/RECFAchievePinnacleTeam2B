@@ -15,7 +15,10 @@ Left2 = Motor(Ports.PORT1, GearSetting.RATIO_6_1, True)
 LiftR = Motor(Ports.PORT5, GearSetting.RATIO_18_1, True)
 LiftL = Motor(Ports.PORT6, GearSetting.RATIO_18_1, False)
 ClawR = Motor(Ports.PORT19, GearSetting.RATIO_6_1, True)
+ClawC = Motor(Ports.PORT20, GearSetting.RATIO_18_1, False)
+clawP = DigitalOut(brain.three_wire_port.a)
 controller_1 = Controller(PRIMARY)
+
 
 
 # add a small delay to make sure we don't print in the middle of the REPL header
@@ -81,6 +84,7 @@ def newdrivetrainctl(l,r):
 
 ### BEGIN MISC CONTROL CODE
 def limbctrl():
+    #claw lift controlls
     if controller_1.buttonUp.pressing():
         LiftR.set_velocity(100, PERCENT)
         LiftR.spin(FORWARD)
@@ -94,6 +98,7 @@ def limbctrl():
     else:
         LiftR.stop()
         LiftL.stop()
+    # Claw rotate vertically controlls
     if 	controller_1.buttonA.pressing():
         ClawR.set_velocity(10, PERCENT)
         ClawR.spin(FORWARD)
@@ -102,6 +107,19 @@ def limbctrl():
         ClawR.spin(REVERSE)
     else:
         ClawR.stop()
+    #claw opening and closing control
+    if controller_1.L2.pressing():
+        clawP.set(True)
+    if controller_1.R2.pressing():
+        clawP.set(False)
+    #Claw rotating clockwize and CC
+    if 	controller_1.R1.pressing():
+        ClawC.set_velocity(10, PERCENT)
+        ClawC.spin(FORWARD)
+    elif controller_1.L1.pressing():
+        ClawC.set_velocity(10, PERCENT)
+        ClawC.spin(REVERSE)
+    
 ### END MISC CONTROL CODE
 
 def when_started1():
