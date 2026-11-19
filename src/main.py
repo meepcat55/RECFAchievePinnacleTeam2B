@@ -13,9 +13,10 @@ Left1_motor_b = Motor(Ports.PORT4, GearSetting.RATIO_6_1, True)
 Left1 = MotorGroup(Left1_motor_a, Left1_motor_b)
 Left2 = Motor(Ports.PORT3, GearSetting.RATIO_6_1, True)
 LiftR = Motor(Ports.PORT6, GearSetting.RATIO_18_1, True)
-LiftL = Motor(Ports.PORT5, GearSetting.RATIO_18_1, False)
+LiftL = Motor(Ports.PORT15, GearSetting.RATIO_18_1, False)
 ClawR = Motor(Ports.PORT7, GearSetting.RATIO_6_1, True)
 ClawC = Motor(Ports.PORT20, GearSetting.RATIO_18_1, False)
+Rotationsensor = Rotation(Ports.PORT8, False)
 clawP = DigitalOut(brain.three_wire_port.a)
 controller_1 = Controller(PRIMARY)
 
@@ -59,9 +60,10 @@ def velocitys(l,r):
 
 def newdrivetrainctl(l,r):
     #convert input values to local variables and ensures they are floating point
-    rstick=float(r)
-    lstick=float(l)
-    #modifies the right stick value so that it can be combine with leftstick to get proper turning
+    r1=float(r)
+    l1=float(l)
+    rstick=(float(r))
+    lstick=(float(l))
     rstick=float(rstick+rstick*(lstick/100))
     #the above function can result in cases where the value is over 100 or under 100 in such cases it is scaled approprietly
     if rstick>100:
@@ -125,5 +127,6 @@ def when_started1():
     while True:
         newdrivetrainctl(controller_1.axis3.position(), controller_1.axis1.position())
         limbctrl()
+        print(Rotationsensor.angle())
         wait(5, MSEC)
 when_started1()

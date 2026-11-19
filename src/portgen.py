@@ -9,13 +9,14 @@ R2=2
 R3=17
 #VERTICAL MOTOR
 VMR=6
-VML=5
+VML=15
 #CLAW ROTATOR VERTICAL AS IN THE ONE THAT SWINGS IT
 CR=7
 #CLAW ROTATOR CLOCKWIZE/COUNTERCLOCKWISE
 CLC=20
 #MISC
 RADIO=21
+ROTATIONSENSOR=8
 
 
 
@@ -32,5 +33,6 @@ print("LiftR = Motor(Ports.PORT" + str(VMR) + ", GearSetting.RATIO_18_1, True)")
 print("LiftL = Motor(Ports.PORT" + str(VML) + ", GearSetting.RATIO_18_1, False)")
 print("ClawR = Motor(Ports.PORT" + str(CR) + ", GearSetting.RATIO_6_1, True)")
 print("ClawC = Motor(Ports.PORT" + str(CLC) + ", GearSetting.RATIO_18_1, False)")
+print("Rotationsensor = Rotation(Ports.PORT" + str(ROTATIONSENSOR) +", False)")
 print("clawP = DigitalOut(brain.three_wire_port.a)")
 print("controller_1 = Controller(PRIMARY)")
