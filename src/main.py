@@ -60,10 +60,16 @@ def velocitys(l,r):
 
 def newdrivetrainctl(l,r):
     #convert input values to local variables and ensures they are floating point
-    r1=float(r)
-    l1=float(l)
-    rstick=(float(r))
-    lstick=(float(l))
+    rstick=(float(r) ** 2)/100
+    lstick=(float(l) ** 2)/100
+    if rstick>100:
+        rstick=100
+    if lstick<-100:
+        lstick=-100
+    if r<0:
+        rstick = rstick*(-1)
+    if l<0:
+        lstick = lstick*(-1)
     rstick=float(rstick+rstick*(lstick/100))
     #the above function can result in cases where the value is over 100 or under 100 in such cases it is scaled approprietly
     if rstick>100:
